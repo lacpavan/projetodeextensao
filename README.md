@@ -104,5 +104,5 @@ Projeto desenvolvido por alunos.
 | Thiago Alves Serra | [@thiagoexpressoDev](https://github.com/thiagoexpressoDev) |
 | Guilherme Carvalho | [@guilhermecarvalho173](https://github.com/guilhermecarvalho173) |
 | Samuel de Castro | — |
-| Luana Goto | [luanagoto](https://github.com/luanagoto) |
+| Luana Goto | [@luanagoto](https://github.com/luanagoto) |
 | Maria Clara Esteves | [@uusaagii](https://github.com/uusaagii) |
