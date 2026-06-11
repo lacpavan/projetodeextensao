@@ -1,8 +1,8 @@
-# Projeto de Extensão — Sistema de Publicação Centralizada para Impressão 3D
+# Projeto de Extensão — Sistema de Publicação Centralizada para pequenos negócios.
 
 Workflow de automação usando n8n + API do Mercado Livre.
 
-Preencha um formulário, clique em enviar — o anúncio é publicado automaticamente. Sem acessar a plataforma manualmente, sem copiar e colar entre abas.
+Preencha um formulário, clique em enviar e o anúncio é publicado automaticamente. Sem acessar a plataforma manualmente, sem copiar e colar entre abas. A arquitetura foi projetada para escalar para múltiplos marketplaces a partir de um único formulário.
 
 ---
 
@@ -99,13 +99,20 @@ Anúncio publicado via API com status 201 Created em 1,7 segundos.
 
 ## Contexto acadêmico
 
-Projeto desenvolvido como extensão universitária com foco em automação de e-commerce para pequenos negócios de impressão 3D. A arquitetura foi projetada para escalar para múltiplos marketplaces a partir de um único formulário.
+Projeto desenvolvido para a disciplina de Projeto de Extensão, sob orientação do professor Raphael Lopes de Souza, no curso de Inteligência Artificial da USCS. Foca em automação de e-commerce para pequenos negócios.
 
 ---
 
-## Autora
+## Equipe
 
-**Larissa**
-Desenvolvedora Python Jr. & pesquisadora de IA
+Projeto desenvolvido por alunos do curso de Inteligência Artificial da USCS.
 
-[LinkedIn](https://linkedin.com/in/lacpavan) · [GitHub](https://github.com/lacpavan)
+| Nome | GitHub |
+|------|--------|
+| Larissa Pavan | [@lacpavan](https://github.com/lacpavan) |
+| Beatriz Mayumi | [@BiaMayumi](https://github.com/BiaMayumi) |
+| Thiago Alves Serra | [@thiagoexpressoDev](https://github.com/thiagoexpressoDev) |
+| Guilherme Carvalho | [@guilhermecarvalho173](https://github.com/guilhermecarvalho173) |
+| Samuel de Castro | — |
+| Luana Goto | — |
+| Maria Clara Esteves | [@uusaagii](https://github.com/uusaagii) |
