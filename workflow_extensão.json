@@ -1,0 +1,144 @@
+{
+  "name": "Publicação ML — Mini Boneco Darth Vader 3D",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "3a687c14-40cc-418f-9762-9ea30fed9061",
+        "formTitle": "Cadastro de Produto — Impressão 3D",
+        "formDescription": "Publique seu produto de impressão 3D no Mercado Livre com um clique.",
+        "formFields": {
+          "values": [
+            { "fieldLabel": "Nome do produto",       "placeholder": "Mini Boneco Darth Vader 3D — Star Wars Colecionável", "requiredField": true },
+            { "fieldLabel": "Descrição",              "fieldType": "textarea", "placeholder": "Mini boneco colecionável do Darth Vader produzido em impressão 3D...", "requiredField": true },
+            { "fieldLabel": "Preço (R$)",             "fieldType": "number", "placeholder": "89.90", "requiredField": true },
+            { "fieldLabel": "Quantidade em estoque", "fieldType": "number", "placeholder": "5", "requiredField": true },
+            { "fieldLabel": "Fotos do produto",      "fieldType": "file", "acceptFileTypes": ".jpg,.jpeg,.png,.webp", "requiredField": true }
+          ]
+        },
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "a1bfd18c-dc95-42c9-98dd-689b9f05e397",
+      "name": "Form Trigger — Cadastro de Produto",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2,
+      "position": [-928, -16],
+      "webhookId": "3a687c14-40cc-418f-9762-9ea30fed9061"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "typeValidation": "strict", "version": 1 },
+          "conditions": [
+            { "id": "c1", "leftValue": "={{ $json['Nome do produto'] }}",       "rightValue": "", "operator": { "type": "string", "operation": "notEmpty" } },
+            { "id": "c2", "leftValue": "={{ $json['Preço (R$)'] }}",            "rightValue": 0,  "operator": { "type": "number", "operation": "gt" } },
+            { "id": "c3", "leftValue": "={{ $json['Quantidade em estoque'] }}", "rightValue": 0,  "operator": { "type": "number", "operation": "gte" } }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "99bf879b-e399-47ec-8d0f-2e8c88783180",
+      "name": "Validação — Campos obrigatórios",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [-704, -16]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "❌ Erro de validação: preencha nome, preço e estoque corretamente.",
+        "options": { "responseCode": 400 }
+      },
+      "id": "224e2a69-2638-4b10-bcfa-18f7751ff241",
+      "name": "Resposta — Erro de validação",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [-480, 160]
+    },
+    {
+      "parameters": {
+        "jsCode": "// MOCK DE IMGUR PARA DEMO\n// Imagem pública de produto similar para simular o upload\n// Para a gravação real: faça upload manual em imgur.com e\n// substitua a URL abaixo pela URL direta do seu produto\nconst foto_urls = [\n  'https://http2.mlstatic.com/D_NQ_NP_2X_957418-MLB73709416651_122023-E.webp'\n];\n\nreturn [{ json: { ...$json, foto_urls } }];"
+      },
+      "id": "mock-imgur",
+      "name": "Mock — URLs das fotos (Imgur simulado)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-480, -16]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Payload fixo para demo do Mini Boneco Darth Vader 3D\n// category_id MLB271580 = Figuras de Ação (subcategoria de Brinquedos e Hobbies MLB1132)\n// Referência: https://developers.mercadolivre.com.br/pt_br/publicacao-de-produtos\nconst d = $json;\n\nconst payload = {\n  title:              d['Nome do produto'],\n  category_id:        'MLB271580',\n  price:              parseFloat(d['Preço (R$)']),\n  currency_id:        'BRL',\n  available_quantity: parseInt(d['Quantidade em estoque']),\n  buying_mode:        'buy_it_now',\n  listing_type_id:    'free',       // free = sem custo, ideal para conta de teste\n  condition:          'new',\n  description:        d['Descrição'],\n  pictures:           d.foto_urls.map(url => ({ source: url })),\n  sale_terms: [\n    { id: 'WARRANTY_TYPE', value_name: 'Garantia do vendedor' },\n    { id: 'WARRANTY_TIME', value_name: '90 dias' }\n  ],\n  tags: ['immediate_payment'],\n  attributes: [\n    { id: 'item_condition', value_name: 'Novo' },\n    { id: 'BRAND',          value_name: 'Artesanal' },\n    { id: 'SELLER_SKU',     value_name: 'DARTH-VADER-3D-001' },\n    { id: 'PACKAGE_WEIGHT', value_name: '120 g' },\n    { id: 'PACKAGE_LENGTH', value_name: '12 cm' },\n    { id: 'PACKAGE_WIDTH',  value_name: '8 cm' },\n    { id: 'PACKAGE_HEIGHT', value_name: '15 cm' }\n  ],\n  shipping: {\n    mode:          'me2',\n    local_pick_up: false,\n    free_shipping: false,\n    free_methods:  []\n  }\n};\n\nreturn [{ json: { ...d, ml_payload: payload } }];"
+      },
+      "id": "781c6a1f-6b0a-4d31-8bb5-cbbfbaac78fe",
+      "name": "Code — Payload Mercado Livre",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-256, -16]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mercadolibre.com/items",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Accept",       "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.ml_payload) }}",
+        "options": {
+          "response": { "response": { "fullResponse": true } }
+        }
+      },
+      "id": "7b48d150-a0c2-4b9f-920e-6ee1326c826a",
+      "name": "HTTP Request — POST Mercado Livre",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-32, -16]
+    },
+    {
+      "parameters": {
+        "jsCode": "const r = $json;\nconst ok = r?.statusCode === 201;\n\nreturn [{ json: {\n  status:       ok ? '✅ Publicado com sucesso!' : `❌ Erro ${r?.statusCode}`,\n  item_id:      r?.body?.id        || null,\n  link:         r?.body?.permalink || null,\n  status_ml:    r?.body?.status    || null,\n  erro_detalhe: ok ? null : (r?.body?.message || r?.body?.error || JSON.stringify(r?.body))\n}}];"
+      },
+      "id": "6477c609-6209-4f11-a6f5-825e56d5117f",
+      "name": "Code — Consolidar resultado",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [192, -16]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json, null, 2) }}",
+        "options": { "responseCode": 200 }
+      },
+      "id": "12c95596-dd1f-4754-8628-56c6d9ade574",
+      "name": "Resposta — Resultado final",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [416, -16]
+    }
+  ],
+  "connections": {
+    "Form Trigger — Cadastro de Produto":     { "main": [[{ "node": "Validação — Campos obrigatórios",          "type": "main", "index": 0 }]] },
+    "Validação — Campos obrigatórios":        { "main": [
+      [{ "node": "Mock — URLs das fotos (Imgur simulado)", "type": "main", "index": 0 }],
+      [{ "node": "Resposta — Erro de validação",           "type": "main", "index": 0 }]
+    ]},
+    "Mock — URLs das fotos (Imgur simulado)": { "main": [[{ "node": "Code — Payload Mercado Livre",          "type": "main", "index": 0 }]] },
+    "Code — Payload Mercado Livre":           { "main": [[{ "node": "HTTP Request — POST Mercado Livre",     "type": "main", "index": 0 }]] },
+    "HTTP Request — POST Mercado Livre":      { "main": [[{ "node": "Code — Consolidar resultado",           "type": "main", "index": 0 }]] },
+    "Code — Consolidar resultado":            { "main": [[{ "node": "Resposta — Resultado final",            "type": "main", "index": 0 }]] }
+  },
+  "pinData": {},
+  "active": false,
+  "settings": { "executionOrder": "v1", "binaryMode": "separate" },
+  "meta": { "instanceId": "39a2787d68d5bd96c7e96406281bd6c16c5f96a37a0be4cbbe3c2a88120d5bf7" },
+  "tags": ["impressao3d", "mercadolivre", "demo", "darth-vader"]
+}
