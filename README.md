@@ -1,4 +1,4 @@
-# Projeto de Extensão — Sistema de Publicação Centralizada para pequenos negócios.
+# Projeto de Extensão: Sistema de Publicação Centralizada para pequenos negócios.
 
 Workflow de automação usando n8n + API do Mercado Livre.
 
@@ -32,16 +32,6 @@ Preencha um formulário, clique em enviar e o anúncio é publicado automaticame
 | ngrok | Redirect OAuth2 em ambiente local |
 | JavaScript | Transformação de dados e montagem do payload |
 
----
-
-## Arquivos
-
-```
-projeto-de-extensao/
-├── workflow_extensão.json            # Workflow principal — importe direto no n8n
-├── WhatsApp Video 2026-06-10 at 14.18.16.mp4  # Demonstração do workflow em execução
-└── README.md
-```
 
 ---
 
@@ -105,7 +95,7 @@ Projeto desenvolvido para a disciplina de Projeto de Extensão, sob orientação
 
 ## Equipe
 
-Projeto desenvolvido por alunos do curso de Inteligência Artificial da USCS.
+Projeto desenvolvido por alunos.
 
 | Nome | GitHub |
 |------|--------|
@@ -114,5 +104,5 @@ Projeto desenvolvido por alunos do curso de Inteligência Artificial da USCS.
 | Thiago Alves Serra | [@thiagoexpressoDev](https://github.com/thiagoexpressoDev) |
 | Guilherme Carvalho | [@guilhermecarvalho173](https://github.com/guilhermecarvalho173) |
 | Samuel de Castro | — |
-| Luana Goto | — |
+| Luana Goto | [luanagoto](https://github.com/luanagoto) |
 | Maria Clara Esteves | [@uusaagii](https://github.com/uusaagii) |
